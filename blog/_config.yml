@@ -1,0 +1,6 @@
+title: Kastrus Blog
+description: Blog oficial do Kastrus
+baseurl: ""
+url: "https://www.kastrus.com"
+markdown: kramdown
+theme: just-the-docs
