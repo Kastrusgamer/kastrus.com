@@ -243,6 +243,7 @@
 
     /* ─── CINEMATIC PARTICLES ─── */
     function initCinematicParticles() {
+        if (isMobile) return;
         const canvas = document.getElementById('cinematicParticles');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');

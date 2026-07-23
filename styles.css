@@ -486,6 +486,13 @@ body.has-custom-cursor a,body.has-custom-cursor button,body.has-custom-cursor in
 
 /* ─── MOBILE (max-width: 768px) ─── */
 @media(max-width:768px){
+    /* Disable flickering overlays on mobile */
+    .noise,.scanlines{display:none!important}
+    .cinematic__grain{animation:none!important;opacity:0!important}
+    .cinematic__particles{display:none!important}
+    /* GPU-accelerate parallax backgrounds */
+    .hero::before,.about::after,.live::after,.clipes::after,.arquivo::after,.operacoes::after,.agenda::after,.intel::after{will-change:transform;transform:translateZ(0)}
+
     /* Nav */
     .nav{padding:1rem 1.2rem}
     .nav.scrolled{padding:0.7rem 1.2rem}
