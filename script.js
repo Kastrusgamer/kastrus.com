@@ -10,6 +10,14 @@
     var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     var isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
+    /* ─── REMOVE FLICKERING ELEMENTS ON MOBILE ─── */
+    if (isMobile) {
+        var els = document.querySelectorAll('.noise,.scanlines,.overlay,.cinematic__grain,.cinematic__particles');
+        els.forEach(function(el) { el.remove(); });
+        var svgFilter = document.getElementById('noiseFilter');
+        if (svgFilter) svgFilter.closest('svg').remove();
+    }
+
     /* ─── LOADER ─── */
     const loader = document.getElementById('loader');
     const progress = document.getElementById('loaderProgress');

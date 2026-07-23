@@ -486,12 +486,21 @@ body.has-custom-cursor a,body.has-custom-cursor button,body.has-custom-cursor in
 
 /* ─── MOBILE (max-width: 768px) ─── */
 @media(max-width:768px){
-    /* Disable flickering overlays on mobile */
-    .noise,.scanlines{display:none!important}
+    /* Disable ALL flickering sources on mobile */
+    .noise,.scanlines,.overlay{display:none!important}
     .cinematic__grain{animation:none!important;opacity:0!important}
     .cinematic__particles{display:none!important}
-    /* GPU-accelerate parallax backgrounds */
-    .hero::before,.about::after,.live::after,.clipes::after,.arquivo::after,.operacoes::after,.agenda::after,.intel::after{will-change:transform;transform:translateZ(0)}
+    .clip-panel__scan{animation:none!important}
+    .hero__scroll-line{animation:none!important;opacity:0.5}
+    .hero::before,.about::after,.live::after,.clipes::after,.arquivo::after,.operacoes::after,.agenda::after,.intel::after,.contato::after{background-attachment:scroll!important}
+    /* Remove GPU-heavy effects at screen edges */
+    .nav.scrolled{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+    .section-divider::before{box-shadow:none!important}
+    .scroll-progress{box-shadow:none!important}
+    .intel-card--featured::before,.intel-card::after{display:none!important}
+    .intel::before{display:none!important}
+    /* Disable all box-shadow pulse animations */
+    .hero__badge-dot,.nav__diamond,.live__pulse,.sch-card__status--ok span,.intel__status-dot,.footer__status span{animation:none!important;box-shadow:none!important}
 
     /* Nav */
     .nav{padding:1rem 1.2rem}
