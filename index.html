@@ -2,7 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#050608">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>KASTRUS — Centro de Operações</title>
     <meta name="description" content="Kastrus - Experiência digital premium. Gameplays, clipes e vídeos em universo sci-fi.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,8 +14,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preload" as="image" href="assets/scene-01.webp">
+    <link rel="preload" as="image" href="assets/scene-02.webp">
+    <link rel="preload" as="image" href="assets/scene-03.webp">
+    <link rel="preload" as="image" href="assets/scene-05.webp">
+    <link rel="icon" type="image/webp" href="assets/scene-01.webp">
 </head>
 <body>
+    <!-- Skip to Content -->
+    <a href="#hero" class="skip-link">PULAR PARA CONTEÚDO</a>
+
+    <!-- SVG Noise Filter -->
+    <svg style="position:absolute;width:0;height:0">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+            <feColorMatrix type="saturate" values="0"/>
+        </filter>
+    </svg>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor__dot" id="cursorDot"></div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Noise Overlay -->
+    <div class="noise" id="noiseOverlay">
+        <svg width="100%" height="100%"><rect width="100%" height="100%" filter="url(#noiseFilter)"/></svg>
+    </div>
+
     <!-- WebGL Canvas -->
     <canvas id="webgl-canvas"></canvas>
 
@@ -23,6 +55,8 @@
 
     <!-- Loader -->
     <div class="loader" id="loader">
+        <div class="loader__brand">KASTRUS</div>
+        <div class="loader__ring"></div>
         <div class="loader__inner">
             <div class="loader__bar">
                 <div class="loader__progress" id="loaderProgress"></div>
@@ -65,6 +99,93 @@
         </div>
     </div>
 
+    <!-- ═══════════════════ CINEMATIC INTRO ═══════════════════ -->
+    <section class="cinematic" id="cinematic">
+        <div class="cinematic__viewport">
+            <!-- Scene 01: Orbital -->
+            <div class="cinematic__scene cinematic__scene--active" data-scene="1">
+                <img src="assets/scene-01.webp" alt="Orbital deployment — cena cinematográfica de abertura" class="cinematic__img" loading="eager">
+                <div class="cinematic__content">
+                    <span class="cinematic__label">ORBITAL DEPLOYMENT</span>
+                    <div class="cinematic__line"></div>
+                </div>
+            </div>
+            <!-- Scene 02: Launch -->
+            <div class="cinematic__scene" data-scene="2">
+                <img src="assets/scene-02.webp" alt="ARC launch — foguete decolando" class="cinematic__img">
+                <div class="cinematic__content">
+                    <span class="cinematic__label">ARC LAUNCH DETECTED</span>
+                    <div class="cinematic__line"></div>
+                </div>
+            </div>
+            <!-- Scene 03: Entry -->
+            <div class="cinematic__scene" data-scene="3">
+                <img src="assets/scene-03.webp" alt="Atmospheric entry — reentrada na atmosfera" class="cinematic__img">
+                <div class="cinematic__content">
+                    <span class="cinematic__label">ATMOSPHERIC ENTRY</span>
+                    <div class="cinematic__line"></div>
+                </div>
+            </div>
+            <!-- Scene 04: Clouds -->
+            <div class="cinematic__scene" data-scene="4">
+                <img src="assets/scene-04.webp" alt="Target approach — aproximação do alvo" class="cinematic__img">
+                <div class="cinematic__content">
+                    <span class="cinematic__label">TARGET APPROACH</span>
+                    <div class="cinematic__line"></div>
+                </div>
+            </div>
+            <!-- Scene 05: Descent -->
+            <div class="cinematic__scene" data-scene="5">
+                <img src="assets/scene-05.webp" alt="Final descent — descida final" class="cinematic__img">
+                <div class="cinematic__content">
+                    <span class="cinematic__label">FINAL DESCENT</span>
+                    <div class="cinematic__line"></div>
+                </div>
+            </div>
+            <!-- Scene 06: Impact -->
+            <div class="cinematic__scene" data-scene="6">
+                <img src="assets/scene-06.webp" alt="Impact confirmed — impacto confirmado" class="cinematic__img">
+                <div class="cinematic__content">
+                    <span class="cinematic__label">IMPACT CONFIRMED</span>
+                    <div class="cinematic__line"></div>
+                </div>
+            </div>
+            <!-- Scene 07: Reveal -->
+            <div class="cinematic__scene" data-scene="7">
+                <img src="assets/scene-07.webp" alt="Reveal — revelação final" class="cinematic__img">
+            </div>
+
+            <!-- Flash overlay (Scene 06) -->
+            <div class="cinematic__flash"></div>
+
+            <!-- CTA (Scene 07) -->
+            <div class="cinematic__cta" id="cinematicCta">
+                <h2 class="cinematic__cta-title">KASTRUS</h2>
+                <p class="cinematic__cta-sub">TECNOLOGIA QUE IMPACTA.</p>
+                <a href="#hero" class="cta cta--primary cta--lg magnetic" id="cinematicBtn">
+                    <span class="cta__text">INICIAR EXPLORAÇÃO</span>
+                    <span class="cta__glow"></span>
+                </a>
+            </div>
+
+            <!-- Global overlays -->
+            <div class="cinematic__vignette"></div>
+            <div class="cinematic__grain"></div>
+            <canvas class="cinematic__particles" id="cinematicParticles"></canvas>
+
+            <!-- Progress bar -->
+            <div class="cinematic__progress">
+                <div class="cinematic__progress-fill" id="cinematicFill"></div>
+            </div>
+
+            <!-- Scroll hint -->
+            <div class="cinematic__scroll-hint" id="cinematicHint">
+                <span>ROLE PARA DESCOBRIR</span>
+                <div class="cinematic__scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
     <!-- ═══════════════════ HERO ═══════════════════ -->
     <section class="hero" id="hero" data-section>
         <div class="hero__content">
@@ -82,11 +203,11 @@
                 Uma experiência imersiva de alto impacto.
             </p>
             <div class="hero__ctas" data-anim="fade-up" data-delay="0.8">
-                <a href="#transmissao" class="cta cta--primary">
+                <a href="#transmissao" class="cta cta--primary magnetic">
                     <span class="cta__text">INICIAR TRANSMISSÃO</span>
                     <span class="cta__glow"></span>
                 </a>
-                <a href="#arquivo" class="cta cta--outline">
+                <a href="#arquivo" class="cta cta--outline magnetic">
                     <span class="cta__text">ACESSAR ARQUIVO</span>
                 </a>
             </div>
@@ -99,7 +220,6 @@
 
     <!-- ═══════════════════ ABOUT — FULLSCREEN ═══════════════════ -->
     <section class="about" id="about" data-section>
-        <div class="about__bg"></div>
         <div class="about__content">
             <div class="about__left">
                 <span class="section-num" data-anim="fade-up">01</span>
@@ -110,25 +230,13 @@
             </div>
             <div class="about__right">
                 <p class="about__text" data-anim="fade-up" data-delay="0.2">
-                    Conteúdo diário com gameplays, clipes e vídeos. Siga nos canais abaixo e não perca os próximos drops!
+                    Sou o criador por trás do Kastrus Gamer, um projeto dedicado a explorar os maiores desafios, estratégias e novidades do universo dos games. Minha missão é ajudar jogadores a evoluírem através de conteúdo autêntico, entretenimento de qualidade e experiências reais dentro dos jogos.
                 </p>
-                <div class="about__stats" data-anim="fade-up" data-delay="0.4">
-                    <div class="stat">
-                        <span class="stat__num" data-count="15000">0</span>
-                        <span class="stat__label">SEGUIDORES</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat__num" data-count="500">0</span>
-                        <span class="stat__label">VÍDEOS</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat__num" data-count="1200">0</span>
-                        <span class="stat__label">HORAS LIVE</span>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- ═══════════════════ LIVE — FULLSCREEN ═══════════════════ -->
     <section class="live" id="transmissao" data-section>
@@ -143,7 +251,7 @@
                 <div class="live__player" data-anim="fade-up" data-delay="0.2">
                     <div class="live__player-wrap">
                         <iframe 
-                            src="https://player.twitch.tv/?channel=kastrus&parent=kastrus.com&autoplay=false" 
+                            src="https://player.twitch.tv/?channel=kastrus&parent=localhost&autoplay=false" 
                             frameborder="0" 
                             allowfullscreen="true" 
                             scrolling="no">
@@ -165,7 +273,7 @@
                         </div>
                         <div class="panel__body">
                             <p>Conecte-se ao canal da Twitch para assistir às lives em tempo real.</p>
-                            <a href="https://www.twitch.tv/kastrus" target="_blank" class="cta cta--primary cta--sm cta--full">
+                            <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="cta cta--primary cta--sm cta--full">
                                 <span class="cta__text"><i class="fab fa-twitch"></i> CONECTAR À TWITCH</span>
                                 <span class="cta__glow"></span>
                             </a>
@@ -178,11 +286,11 @@
                         </div>
                         <div class="panel__body">
                             <div class="socials">
-                                <a href="https://www.twitch.tv/kastrus" target="_blank" class="social social--twitch"><i class="fab fa-twitch"></i></a>
-                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" class="social social--tiktok"><i class="fab fa-tiktok"></i></a>
-                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" class="social social--yt"><i class="fab fa-youtube"></i></a>
-                                <a href="https://instagram.com/kastrus_oficial" target="_blank" class="social social--ig"><i class="fab fa-instagram"></i></a>
-                                <a href="https://discord.gg/khastrus" target="_blank" class="social social--dc"><i class="fab fa-discord"></i></a>
+                                <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="social social--twitch"><i class="fab fa-twitch"></i></a>
+                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="social social--tiktok"><i class="fab fa-tiktok"></i></a>
+                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="social social--yt"><i class="fab fa-youtube"></i></a>
+                                <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" class="social social--ig"><i class="fab fa-instagram"></i></a>
+                                <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" class="social social--dc"><i class="fab fa-discord"></i></a>
                             </div>
                         </div>
                     </div>
@@ -190,6 +298,8 @@
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- ═══════════════════ TIKTOK — FULLSCREEN ═══════════════════ -->
     <section class="clipes" id="clipes" data-section>
@@ -202,47 +312,49 @@
             </div>
             <div class="clipes__grid">
                 <div class="clip-panel" data-anim="fade-up" data-delay="0.2">
-                    <div class="clip-panel__front">
+                    <div class="clip-panel__front clip-panel__front--tiktok">
                         <div class="clip-panel__icon"><i class="fab fa-tiktok"></i></div>
                         <div class="clip-panel__scan"></div>
                     </div>
                     <div class="clip-panel__info">
                         <h4>MELHORES MOMENTOS</h4>
                         <p>Os melhores clipes das transmissões ao vivo.</p>
-                        <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" class="cta cta--accent cta--sm">
+                        <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="cta cta--accent cta--sm">
                             <span class="cta__text">ACESSAR CLIPES</span>
                         </a>
                     </div>
                 </div>
                 <div class="clip-panel" data-anim="fade-up" data-delay="0.3">
-                    <div class="clip-panel__front">
-                        <div class="clip-panel__icon"><i class="fas fa-bolt"></i></div>
+                    <div class="clip-panel__front clip-panel__front--bolt">
+                        <div class="clip-panel__icon"><i class="fab fa-instagram"></i></div>
                         <div class="clip-panel__scan"></div>
                     </div>
                     <div class="clip-panel__info">
-                        <h4>CLIPE INSANO</h4>
-                        <p>Momentos épicos que marcaram a história do canal.</p>
-                        <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" class="cta cta--accent cta--sm">
-                            <span class="cta__text">VER AGORA</span>
+                        <h4>FEED INSTAGRAM</h4>
+                        <p> Fotos e stories exclusivos do dia a dia.</p>
+                        <a href="https://www.instagram.com/kastrus_oficial/" target="_blank" rel="noopener noreferrer" class="cta cta--accent cta--sm">
+                            <span class="cta__text">SEGUIR AGORA</span>
                         </a>
                     </div>
                 </div>
                 <div class="clip-panel" data-anim="fade-up" data-delay="0.4">
-                    <div class="clip-panel__front">
-                        <div class="clip-panel__icon"><i class="fas fa-users"></i></div>
+                    <div class="clip-panel__front clip-panel__front--community">
+                        <div class="clip-panel__icon"><i class="fab fa-youtube"></i></div>
                         <div class="clip-panel__scan"></div>
                     </div>
                     <div class="clip-panel__info">
-                        <h4>COMUNIDADE</h4>
-                        <p>Junte-se à comunidade e não perca nenhum momento.</p>
-                        <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" class="cta cta--accent cta--sm">
-                            <span class="cta__text">SEGUIR AGORA</span>
+                        <h4>CANAL YOUTUBE</h4>
+                        <p>Vídeos completos, guias e highlights épicos.</p>
+                        <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="cta cta--accent cta--sm">
+                            <span class="cta__text">INSCREVA-SE</span>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- ═══════════════════ YOUTUBE — FULLSCREEN ═══════════════════ -->
     <section class="arquivo" id="arquivo" data-section>
@@ -259,14 +371,22 @@
                     <span>CARREGANDO ARQUIVOS...</span>
                 </div>
             </div>
-            <div class="arquivo__cta" data-anim="fade-up" data-delay="0.4">
-                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" class="cta cta--red cta--lg">
-                    <span class="cta__text"><i class="fab fa-youtube"></i> ACESSAR CANAL COMPLETO</span>
+            <div class="arquivo__redes" data-anim="fade-up" data-delay="0.3">
+                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="cta cta--red cta--sm">
+                    <span class="cta__text"><i class="fab fa-youtube"></i> YOUTUBE</span>
                     <span class="cta__glow"></span>
+                </a>
+                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="cta cta--accent cta--sm">
+                    <span class="cta__text"><i class="fab fa-tiktok"></i> TIKTOK</span>
+                </a>
+                <a href="https://www.instagram.com/kastrus_oficial/" target="_blank" rel="noopener noreferrer" class="cta cta--outline cta--sm">
+                    <span class="cta__text"><i class="fab fa-instagram"></i> INSTAGRAM</span>
                 </a>
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- ═══════════════════ GAMES — FULLSCREEN ═══════════════════ -->
     <section class="operacoes" id="operacoes" data-section>
@@ -310,8 +430,10 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- ═══════════════════ AGENDA ═══════════════════ -->
-    <section class="agenda" data-section>
+    <section class="agenda" id="agenda" data-section>
         <div class="agenda__content">
             <div class="agenda__header">
                 <span class="section-num" data-anim="fade-up">06</span>
@@ -339,12 +461,14 @@
                     <div class="sch-card__day">DOMINGO</div>
                     <div class="sch-card__time">GRAVADO</div>
                     <div class="sch-card__desc">YouTube & Twitch</div>
-                    <div class="sch-card__status sch-card__status--info"><span></span> RECONhecimento</div>
+                    <div class="sch-card__status sch-card__status--info"><span></span> RECONHECIMENTO</div>
                 </div>
             </div>
             <p class="agenda__note" data-anim="fade-up">* Horários sujeitos a mudanças — siga nas redes para avisos.</p>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- ═══════════════════ INTELLIGENCE FEED ═══════════════════ -->
     <section class="intel" id="intel" data-section>
@@ -387,7 +511,7 @@
                         </div>
                         <h3 class="intel-card__title" id="featTitle"></h3>
                         <p class="intel-card__desc" id="featDesc"></p>
-                        <a class="cta cta--primary cta--sm" id="featLink" href="#" target="_blank">
+                        <a class="cta cta--primary cta--sm" id="featLink" href="#" target="_blank" rel="noopener noreferrer">
                             <span class="cta__text">LER INTELIGÊNCIA COMPLETA <i class="fas fa-arrow-right"></i></span>
                             <span class="cta__glow"></span>
                         </a>
@@ -406,6 +530,8 @@
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <!-- ═══════════════════ CONTACT — FULLSCREEN ═══════════════════ -->
     <section class="contato" id="comunicacao" data-section>
@@ -431,11 +557,11 @@
                         <div class="panel__head"><i class="fas fa-globe"></i><span>REDES</span></div>
                         <div class="panel__body">
                             <div class="socials socials--lg">
-                                <a href="https://instagram.com/kastrus_oficial" target="_blank" class="social social--ig"><i class="fab fa-instagram"></i></a>
-                                <a href="https://discord.gg/khastrus" target="_blank" class="social social--dc"><i class="fab fa-discord"></i></a>
-                                <a href="https://www.twitch.tv/kastrus" target="_blank" class="social social--twitch"><i class="fab fa-twitch"></i></a>
-                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" class="social social--tiktok"><i class="fab fa-tiktok"></i></a>
-                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" class="social social--yt"><i class="fab fa-youtube"></i></a>
+                                <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" class="social social--ig"><i class="fab fa-instagram"></i></a>
+                                <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" class="social social--dc"><i class="fab fa-discord"></i></a>
+                                <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="social social--twitch"><i class="fab fa-twitch"></i></a>
+                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="social social--tiktok"><i class="fab fa-tiktok"></i></a>
+                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="social social--yt"><i class="fab fa-youtube"></i></a>
                             </div>
                         </div>
                     </div>
@@ -467,6 +593,8 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <!-- ═══════════════════ FOOTER ═══════════════════ -->
     <footer class="footer">
         <div class="footer__inner">
@@ -475,14 +603,14 @@
                 <div class="footer__links">
                     <a href="#">Privacidade</a>
                     <a href="#">Termos</a>
-                    <a href="https://github.com/sponsors/alexc" target="_blank">Patrocinar</a>
+                    <a href="https://github.com/sponsors/alexc" target="_blank" rel="noopener noreferrer">Patrocinar</a>
                 </div>
                 <div class="footer__socials">
-                    <a href="https://www.twitch.tv/kastrus" target="_blank"><i class="fab fa-twitch"></i></a>
-                    <a href="https://www.tiktok.com/@kastrusgamer" target="_blank"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.youtube.com/@KastrusGamer" target="_blank"><i class="fab fa-youtube"></i></a>
-                    <a href="https://instagram.com/kastrus_oficial" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://discord.gg/khastrus" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitch"></i></a>
+                    <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+                    <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                    <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
             <div class="footer__bottom">
