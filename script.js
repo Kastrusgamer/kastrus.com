@@ -120,23 +120,26 @@
             var scrollY = window.scrollY;
             var docH = document.documentElement.scrollHeight - window.innerHeight;
 
-            // Hero parallax
-            if (heroEl) {
-                var rect = heroEl.getBoundingClientRect();
-                if (rect.bottom > 0 && rect.top < window.innerHeight) {
-                    var p = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
-                    heroEl.style.setProperty('--hero-parallax', (p * 80) + 'px');
-                    scrollState.heroProgress = p;
+            // Skip parallax on mobile (causes GPU flickering)
+            if (!isMobile) {
+                // Hero parallax
+                if (heroEl) {
+                    var rect = heroEl.getBoundingClientRect();
+                    if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                        var p = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
+                        heroEl.style.setProperty('--hero-parallax', (p * 80) + 'px');
+                        scrollState.heroProgress = p;
+                    }
                 }
-            }
 
-            // Section parallax
-            bgEls.forEach(function(el) {
-                var rect = el.getBoundingClientRect();
-                if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
-                var progress = (window.innerHeight - rect.top) / (window.innerHeight + el.offsetHeight);
-                el.style.setProperty('--section-parallax', ((progress - 0.5) * 40) + 'px');
-            });
+                // Section parallax
+                bgEls.forEach(function(el) {
+                    var rect = el.getBoundingClientRect();
+                    if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
+                    var progress = (window.innerHeight - rect.top) / (window.innerHeight + el.offsetHeight);
+                    el.style.setProperty('--section-parallax', ((progress - 0.5) * 40) + 'px');
+                });
+            }
 
             // Cinematic progress
             if (cinematicSection) {
