@@ -18,6 +18,12 @@
         if (svgFilter) svgFilter.closest('svg').remove();
     }
 
+    /* ─── XSS SANITIZATION ─── */
+    function escapeHtml(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
     /* ─── LOADER ─── */
     const loader = document.getElementById('loader');
     const progress = document.getElementById('loaderProgress');
@@ -567,19 +573,23 @@
         var mobileMenu = document.getElementById('mobileMenu');
         var mobileLinks = document.querySelectorAll('.mobile-menu__link');
 
-        burger.addEventListener('click', function() {
-            burger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-        });
-
-        mobileLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                burger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = '';
+        if (burger && mobileMenu) {
+            burger.addEventListener('click', function() {
+                var isActive = burger.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                burger.setAttribute('aria-expanded', String(isActive));
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
             });
-        });
+
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    burger.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                    burger.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                });
+            });
+        }
 
         document.querySelectorAll('a[href^="#"]').forEach(function(a) {
             a.addEventListener('click', function(e) {
@@ -636,11 +646,11 @@
         SOCIAL_LINKS.forEach(function(s) {
             html += '<a href="' + s.url + '" target="_blank" rel="noopener noreferrer" class="yt-card">' +
                 '<div class="yt-card__thumb">' +
-                '<img src="' + s.scene + '" alt="' + s.platform + ' Kastrus" loading="lazy">' +
+                '<img src="' + s.scene + '" alt="' + escapeHtml(s.platform) + ' Kastrus" loading="lazy">' +
                 '<div class="yt-card__play"><i class="' + s.icon + '" style="padding-left:0;font-size:1.5rem"></i></div>' +
                 '</div>' +
                 '<div class="yt-card__info">' +
-                '<h4>' + s.platform + ' — @kastrus</h4>' +
+                '<h4>' + escapeHtml(s.platform) + ' — @kastrus</h4>' +
                 '<p>Siga para conteúdos exclusivos</p>' +
                 '</div></a>';
         });
@@ -683,12 +693,12 @@
             html += picked.map(function(v) {
                 return '<a href="https://www.youtube.com/watch?v=' + v.id + '" target="_blank" rel="noopener noreferrer" class="yt-card">' +
                     '<div class="yt-card__thumb">' +
-                    '<img src="' + v.thumb + '" alt="' + v.title + '" loading="lazy" onerror="this.src=\'assets/scene-03.webp\'">' +
+                    '<img src="' + v.thumb + '" alt="' + escapeHtml(v.title) + '" loading="lazy">' +
                     '<div class="yt-card__play"><i class="fas fa-play"></i></div>' +
                     '<div class="yt-card__views"><i class="fas fa-eye"></i> ' + fmtV(v.views) + '</div>' +
                     '</div>' +
                     '<div class="yt-card__info">' +
-                    '<h4>' + (v.title.length > 55 ? v.title.substring(0,55)+'...' : v.title) + '</h4>' +
+                    '<h4>' + escapeHtml(v.title.length > 55 ? v.title.substring(0,55)+'...' : v.title) + '</h4>' +
                     '<p>' + ago(v.published) + '</p>' +
                     '</div></a>';
             }).join('');
@@ -874,7 +884,8 @@
 
     function renderIntelFeed() {
         if (!allArticles.length) {
-            document.getElementById('intelLoading').innerHTML =
+            var loadingEl = document.getElementById('intelLoading');
+            if (loadingEl) loadingEl.innerHTML =
                 '<span style="color:var(--text2)">NENHUMA INTELIGÊNCIA DISPONÍVEL</span>';
             return;
         }
@@ -883,60 +894,68 @@
         if (timeEl) timeEl.textContent = new Date().toLocaleString('pt-BR');
 
         var feat = allArticles[0];
-        document.getElementById('intelFeatured').style.display = 'block';
+        var intelFeat = document.getElementById('intelFeatured');
+        if (intelFeat) intelFeat.style.display = 'block';
         var featImg = document.getElementById('featImg');
-        if (feat.img) {
-            featImg.src = feat.img;
-            featImg.onerror = function() {
+        if (featImg) {
+            featImg.alt = feat.title || 'Imagem da matéria em destaque';
+            if (feat.img) {
+                featImg.src = feat.img;
+                featImg.onerror = function() {
+                    featImg.src = 'assets/scene-01.webp';
+                    featImg.className = 'intel-card__img-fallback';
+                };
+            } else {
                 featImg.src = 'assets/scene-01.webp';
                 featImg.className = 'intel-card__img-fallback';
-            };
-        } else {
-            featImg.src = 'assets/scene-01.webp';
-            featImg.className = 'intel-card__img-fallback';
+            }
         }
-        document.getElementById('featCat').textContent = feat.category;
-        document.getElementById('featSource').textContent = feat.source;
-        document.getElementById('featDate').textContent = formatDate(feat.date);
-        document.getElementById('featRead').textContent = feat.readTime + ' leitura';
-        document.getElementById('featTitle').textContent = feat.title;
-        document.getElementById('featDesc').textContent = feat.desc;
-        document.getElementById('featLink').href = feat.link;
+        var el;
+        el = document.getElementById('featCat'); if (el) el.textContent = feat.category;
+        el = document.getElementById('featSource'); if (el) el.textContent = feat.source;
+        el = document.getElementById('featDate'); if (el) el.textContent = formatDate(feat.date);
+        el = document.getElementById('featRead'); if (el) el.textContent = feat.readTime + ' leitura';
+        el = document.getElementById('featTitle'); if (el) el.textContent = feat.title;
+        el = document.getElementById('featDesc'); if (el) el.textContent = feat.desc;
+        el = document.getElementById('featLink'); if (el) el.href = feat.link;
 
         displayedCount = PER_PAGE;
         renderGrid();
 
         var loadMore = document.getElementById('intelLoadMore');
-        loadMore.addEventListener('click', function() {
-            displayedCount += PER_PAGE;
-            renderGrid();
-        });
+        if (loadMore) {
+            loadMore.addEventListener('click', function() {
+                displayedCount += PER_PAGE;
+                renderGrid();
+            });
+        }
 
         updateCount();
     }
 
     function renderGrid() {
         var grid = document.getElementById('intelGrid');
+        if (!grid) return;
         var slice = allArticles.slice(1, displayedCount);
 
         grid.innerHTML = slice.map(function(a) {
             return '<a href="' + a.link + '" target="_blank" rel="noopener noreferrer" class="intel-card">' +
                 '<div class="intel-card__thumb">' +
                 (a.img
-                    ? '<img src="' + a.img + '" alt="' + a.title + '" loading="lazy" onerror="this.parentElement.style.display=\'none\'">'
+                    ? '<img src="' + a.img + '" alt="' + escapeHtml(a.title) + '" loading="lazy">'
                     : '<div style="width:100%;height:100%;background:var(--detail);display:flex;align-items:center;justify-content:center"><i class="fas fa-microchip" style="font-size:2rem;color:var(--orange);opacity:0.3"></i></div>'
                 ) +
                 '<div class="intel-card__thumb-overlay"></div>' +
-                '<span class="intel-card__cat">' + a.category + '</span>' +
+                '<span class="intel-card__cat">' + escapeHtml(a.category) + '</span>' +
                 '</div>' +
                 '<div class="intel-card__content">' +
                 '<div class="intel-card__meta">' +
-                '<span class="intel-card__source">' + a.source + '</span>' +
+                '<span class="intel-card__source">' + escapeHtml(a.source) + '</span>' +
                 '<span class="intel-card__date">' + formatDate(a.date) + '</span>' +
                 '<span class="intel-card__read">' + a.readTime + '</span>' +
                 '</div>' +
-                '<h4 class="intel-card__title">' + a.title + '</h4>' +
-                '<p class="intel-card__desc">' + a.desc + '</p>' +
+                '<h4 class="intel-card__title">' + escapeHtml(a.title) + '</h4>' +
+                '<p class="intel-card__desc">' + escapeHtml(a.desc) + '</p>' +
                 '</div></a>';
         }).join('');
 
@@ -946,9 +965,9 @@
     function updateCount() {
         var el = document.getElementById('intelCount');
         var showing = Math.min(displayedCount, allArticles.length);
-        el.textContent = showing + ' DE ' + allArticles.length + ' RELATÓRIOS';
+        if (el) el.textContent = showing + ' DE ' + allArticles.length + ' RELATÓRIOS';
         var btn = document.getElementById('intelLoadMore');
-        btn.style.display = displayedCount >= allArticles.length ? 'none' : '';
+        if (btn) btn.style.display = displayedCount >= allArticles.length ? 'none' : '';
     }
 
     function formatDate(d) {

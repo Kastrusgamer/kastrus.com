@@ -9,6 +9,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>KASTRUS — Centro de Operações</title>
     <meta name="description" content="Kastrus - Experiência digital premium. Gameplays, clipes e vídeos em universo sci-fi.">
+    <meta property="og:title" content="KASTRUS — Centro de Operações">
+    <meta property="og:description" content="Experiência digital premium. Gameplays, clipes e vídeos em universo sci-fi.">
+    <meta property="og:image" content="assets/scene-01.webp">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="KASTRUS — Centro de Operações">
+    <meta name="twitter:description" content="Experiência digital premium. Gameplays, clipes e vídeos em universo sci-fi.">
+    <meta name="twitter:image" content="assets/scene-01.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,7 +25,10 @@
     <link rel="preload" as="image" href="assets/scene-01.webp">
     <link rel="preload" as="image" href="assets/scene-02.webp">
     <link rel="preload" as="image" href="assets/scene-03.webp">
+    <link rel="preload" as="image" href="assets/scene-04.webp">
     <link rel="preload" as="image" href="assets/scene-05.webp">
+    <link rel="preload" as="image" href="assets/scene-06.webp">
+    <link rel="preload" as="image" href="assets/scene-07.webp">
     <link rel="icon" type="image/webp" href="assets/scene-01.webp">
 </head>
 <body>
@@ -82,7 +93,7 @@
                 <a href="#operacoes" class="nav__link">OPERAÇÕES</a>
                 <a href="#comunicacao" class="nav__link">CONTATO</a>
             </div>
-            <button class="nav__burger" id="burger" aria-label="Menu">
+            <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
                 <span></span><span></span><span></span>
             </button>
         </div>
@@ -252,9 +263,7 @@
                     <div class="live__player-wrap">
                         <iframe 
                             src="https://player.twitch.tv/?channel=kastrus&parent=localhost&autoplay=false" 
-                            frameborder="0" 
-                            allowfullscreen="true" 
-                            scrolling="no">
+                            allowfullscreen="true">
                         </iframe>
                         <div class="live__corners">
                             <span></span><span></span><span></span><span></span>
@@ -286,11 +295,11 @@
                         </div>
                         <div class="panel__body">
                             <div class="socials">
-                                <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="social social--twitch"><i class="fab fa-twitch"></i></a>
-                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="social social--tiktok"><i class="fab fa-tiktok"></i></a>
-                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="social social--yt"><i class="fab fa-youtube"></i></a>
-                                <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" class="social social--ig"><i class="fab fa-instagram"></i></a>
-                                <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" class="social social--dc"><i class="fab fa-discord"></i></a>
+                                <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="social social--twitch" aria-label="Twitch"><i class="fab fa-twitch"></i></a>
+                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="social social--tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="social social--yt" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                                <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" class="social social--ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" class="social social--dc" aria-label="Discord"><i class="fab fa-discord"></i></a>
                             </div>
                         </div>
                     </div>
@@ -499,7 +508,7 @@
             <div class="intel__featured" id="intelFeatured" style="display:none" data-anim="fade-up" data-delay="0.2">
                 <div class="intel-card intel-card--featured">
                     <div class="intel-card__img">
-                        <img id="featImg" src="" alt="">
+                        <img id="featImg" src="" alt="Imagem da matéria em destaque">
                         <div class="intel-card__overlay"></div>
                         <span class="intel-card__cat" id="featCat"></span>
                     </div>
@@ -557,11 +566,11 @@
                         <div class="panel__head"><i class="fas fa-globe"></i><span>REDES</span></div>
                         <div class="panel__body">
                             <div class="socials socials--lg">
-                                <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" class="social social--ig"><i class="fab fa-instagram"></i></a>
-                                <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" class="social social--dc"><i class="fab fa-discord"></i></a>
-                                <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="social social--twitch"><i class="fab fa-twitch"></i></a>
-                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="social social--tiktok"><i class="fab fa-tiktok"></i></a>
-                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="social social--yt"><i class="fab fa-youtube"></i></a>
+                                <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" class="social social--ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                                <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" class="social social--dc" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                                <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" class="social social--twitch" aria-label="Twitch"><i class="fab fa-twitch"></i></a>
+                                <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" class="social social--tiktok" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                                <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" class="social social--yt" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                             </div>
                         </div>
                     </div>
@@ -575,7 +584,7 @@
                         </div>
                         <div class="form__field">
                             <input type="email" id="fEmail" required autocomplete="off" placeholder=" ">
-                            <label for="fEmail">FREQÜÊNCIA</label>
+                            <label for="fEmail">FREQUÊNCIA</label>
                             <span class="form__bar"></span>
                         </div>
                         <div class="form__field">
@@ -601,16 +610,16 @@
             <div class="footer__top">
                 <span class="footer__logo">◆ KASTRUS</span>
                 <div class="footer__links">
-                    <a href="#">Privacidade</a>
-                    <a href="#">Termos</a>
+                    <a href="#!">Privacidade</a>
+                    <a href="#!">Termos</a>
                     <a href="https://github.com/sponsors/alexc" target="_blank" rel="noopener noreferrer">Patrocinar</a>
                 </div>
                 <div class="footer__socials">
-                    <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitch"></i></a>
-                    <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
-                    <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-                    <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                    <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.twitch.tv/kastrus" target="_blank" rel="noopener noreferrer" aria-label="Twitch"><i class="fab fa-twitch"></i></a>
+                    <a href="https://www.tiktok.com/@kastrusgamer" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.youtube.com/@KastrusGamer" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://instagram.com/kastrus_oficial" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://discord.gg/khastrus" target="_blank" rel="noopener noreferrer" aria-label="Discord"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
             <div class="footer__bottom">
